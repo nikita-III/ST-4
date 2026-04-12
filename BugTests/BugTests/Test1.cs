@@ -192,11 +192,47 @@ public sealed class Test1
     }
 
     [TestMethod]
-    public void TestMethodNoThrow()
+    public void TestMethodShortNop()
+    {
+        var bug = new Bug();
+        bug.NxtState(Bug.Trig.Nop);
+        //TestContext.WriteLine(bug.GetState().ToString());
+        Assert.AreEqual(Bug.State.NewDeff, bug.GetState(), $"\n\nTest - {MethodBase.GetCurrentMethod().Name} - NotPassed\n\n");
+    }
+
+    [TestMethod]
+    public void TestMethodThrow()
     {
         var bug = new Bug();
         Assert.Throws<InvalidOperationException>(() => bug.NxtState(Bug.Trig.Solving));
         //TestContext.WriteLine(bug.GetState().ToString());
         //Assert.AreEqual(Bug.State.NewDeff, bug.GetState(), $"\n\nTest - {MethodBase.GetCurrentMethod().Name} - NotPassed\n\n");
+    }
+
+    [TestMethod]
+    public void TestMethodLongThrow()
+    {
+        var bug = new Bug();
+        bug.NxtState(Bug.Trig.LetsSee);
+        Assert.Throws<InvalidOperationException>(() => bug.NxtState(Bug.Trig.ItsNotOk));
+        //TestContext.WriteLine(bug.GetState().ToString());
+        //Assert.AreEqual(Bug.State.NewDeff, bug.GetState(), $"\n\nTest - {MethodBase.GetCurrentMethod().Name} - NotPassed\n\n");
+    }
+
+    [TestMethod]
+    public void TestMethodNoThrow()
+    {
+        var bug = new Bug();
+        //Assert.DoesNotThrow(() => bug.NxtState(Bug.Trig.LetsSee));
+        try
+        {
+            bug.NxtState(Bug.Trig.LetsSee);
+        }
+        catch (Exception ex)
+        {
+            Assert.Fail($"exept-thrown: {ex.Message}");
+        }
+        //TestContext.WriteLine(bug.GetState().ToString());
+        Assert.AreEqual(Bug.State.DeffOverview, bug.GetState(), $"\n\nTest - {MethodBase.GetCurrentMethod().Name} - NotPassed\n\n");
     }
 }
