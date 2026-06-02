@@ -1,7 +1,7 @@
 ﻿namespace BugTests;
 
 using System.Reflection;
-namespace Proc;
+using Proc;
 
 [TestClass]
 public sealed class Test1
